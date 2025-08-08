@@ -1,0 +1,51 @@
+---
+title: Getting Started
+description: This endpoint retrieves a unique authentication token required to make requests to any of Olympia's portal endpoints.
+---
+
+## Access Token
+
+- Users must first request an access token from the API using their **username**, **password**, and **API secret**.
+- The access token is **valid for 24 hours**.
+- The access token must be included as a **Bearer Token** in all requests.
+
+---
+
+## Endpoint Overview
+
+| Field         | Details                       |
+|---------------|------------------------------|
+| **Endpoint**  | `/api/v2/accessToken`         |
+| **Method**    | `POST`                        |
+| **Content-Type** | `application/x-www-form-urlencoded` |
+| **Request Body** | The form data that includes the required fields to obtain your authentication token. |
+
+---
+
+## Parameters
+
+| Key       | Type   | Description                            |
+|-----------|--------|----------------------------------------|
+| `username`| string | Example Username                       |
+| `password`| string | Example Password                       |
+| `secret`  | string | Example 32-character secret string     |
+
+---
+
+## Example Request (`x-www-form-urlencoded`)
+
+| Key       | Value                                    |
+|-----------|------------------------------------------|
+| username  | `johndoe`                                 |
+| password  | `qwerty123`                               |
+| secret    | `Xh7pM2Z5Tq9Vw3Lb8jN0Yk4Rf6G1QdCs`        |
+
+---
+
+## Example JSON Response
+
+```json
+{
+  "token": "MjoUeRxGTB4R-QOP3wrxMrclhvjqf9YW8AI-sVozN2bJLzHe0wLt9LXRVBEekmUphcqyiGRoJ92htR7ztt6meX.I2sUuYIRxwpH2RjOwvELAV9c-2efMht0fbgJp9qrnmvW1CjtoiJdtykI7Qe5MRJ2mLvIOTLJZI5xCpQojT7IjT",
+  "expires": "2024-08-21 23:53:10"
+}

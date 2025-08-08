@@ -1,0 +1,33 @@
+---
+title: Products & Pricing
+description: This endpoint retrieves a list of products and their pricing information based on the specified availability.
+             It returns detailed information about each product, including category, name, and pricing.
+---
+
+## getProductsPricing
+
+### Endpoint Overview
+
+| Field           | Details                                |
+|-----------------|----------------------------------------|
+| **Endpoint**    | `/api/v2/getProductsPricing`            |
+| **Method**      | `POST`                                 |
+| **Content-Type**| `application/json`                     |
+| **Request Body**| JSON object with the `availability` parameter. |
+
+---
+
+## Parameters
+
+| Parameter       | Type     | Description                                   | Values                                      |
+|-----------------|----------|-----------------------------------------------|---------------------------------------------|
+| `availability`  | string   | Specifies the type of products to retrieve.   | `"prescriptions"`, `"orders"`, `"both"`     |
+
+---
+
+## Example JSON Request
+
+```json
+{
+  "availability": "prescriptions"
+}

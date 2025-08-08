@@ -1,0 +1,95 @@
+---
+title: Prescription
+description: Create patient prescriptions via the API.
+---
+
+# Prescription
+
+This API provides methods to **create prescriptions**.
+
+---
+
+## Create Prescription
+
+### Endpoint Overview
+
+| Field | Details |
+| --- | --- |
+| **Endpoint** | `/api/v2/createPrescription` |
+| **Method** | `POST` |
+| **Content-Type** | `application/json` |
+| **Request Body** | JSON object containing the fields required to create a patient prescription. |
+
+### Parameters
+
+| Parameter | Type | Required | Min | Max | Values |
+| --- | --- | --- | ---:| ---:| --- |
+| `products` | object array | Yes | - | - | - |
+| `created_date` | datetime | Yes | - | - | - |
+| `est_ship_date` | datetime | No | - | - | - |
+| `ship_method` | string | Yes | 1 | 32 | - |
+| `ship_to` | string | Yes | 1 | 12 | - |
+| `bill_to` | string | Yes | 1 | 12 | - |
+| `technician` | integer | No | - | - | - |
+| `pt_fname` | string | No | 1 | 255 | - |
+| `pt_lname` | string | No | 1 | 255 | - |
+| `pt_address` | string | No | 1 | 255 | - |
+| `pt_address2` | string | No | 1 | 255 | - |
+| `pt_city` | string | No | 1 | 255 | - |
+| `pt_state` | string | No | 1 | 32 | - |
+| `pt_zip` | string | No | 1 | 10 | - |
+| `pt_phone` | string | No | 1 | 20 | - |
+| `pt_email` | string | No | 1 | 128 | - |
+| `pt_dob` | string | No | 1 | 255 | - |
+| `pt_dl_state` | string | No | 1 | 2 | - |
+| `pt_dl_number` | string | No | 1 | 32 | - |
+| `ship_date` | datetime | No | - | - | - |
+| `notes` | string | No | 1 | 16777215 | - |
+| `entered` | date | No | - | - | - |
+| `entered_by` | integer | No | - | - | - |
+| `po` | string | No | 1 | 128 | - |
+| `med_cond` | string | No | 1 | 16777215 | - |
+| `allergies` | string | No | 1 | 16777215 | - |
+| `refills` | integer | Yes | - | - | - |
+| `can_by` | string | No | 1 | 50 | - |
+| `cc_used` | integer | No | - | - | - |
+| `patient_team_id` | integer | No | - | - | - |
+| `p_last_visit` | date | No | - | - | - |
+| `ship_address_1` | string | No | 1 | 255 | - |
+| `ship_address_2` | string | No | 1 | 255 | - |
+| `ship_city` | string | No | 1 | 64 | - |
+| `ship_state` | string | No | 1 | 2 | - |
+| `ship_zip` | string | No | 1 | 5 | - |
+| `credit_card_ref` | string | No | 1 | 20 | - |
+| `discount_code_applied` | string | No | 1 | 32 | - |
+| `patient_id` | string | Yes | 13 | 13 | - |
+
+---
+
+### Example JSON Request
+
+```json
+{
+    "patient_id": "66df09779557f",
+    "products": [
+        {
+            "prod_id": 1683,
+            "qty": 1,
+            "sig": "Use as directed.",
+            "doc_note": "Use once daily as directed.",
+            "refills": 2
+        }
+    ],
+    "ship_method": "overnight",
+    "ship_to": "physician",
+    "bill_to": "physician"
+}
+```
+
+### Example JSON Response
+
+```json
+{
+    "prescriptionID": 678500
+}
+```

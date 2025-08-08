@@ -1,0 +1,226 @@
+---
+title: Patients
+description: Search, create, and update patient records. Supports storing and querying a third-party EMR ID.
+---
+
+# Patients
+
+This API provides methods to **search**, **create**, and **update** patient records. It supports storing a **third-party EMR (Electronic Medical Record) ID**, which can be searched later.
+
+> **Note:** A valid patient `uuid` is required when submitting a new prescription request.
+
+---
+
+## Search Patient(s)
+
+### Endpoint Overview
+
+| Field | Details |
+| --- | --- |
+| **Endpoint** | `/api/v2/searchPatients` |
+| **Method** | `POST` |
+| **Content-Type** | `application/json` |
+| **Request Body** | A JSON object whose keys are patient fields and whose values are objects with search options. |
+
+### Parameters
+
+| Parameter | Type | Description | Values |
+| --- | --- | --- | --- |
+| `field_name` | string | The field to search (e.g., `first_name`, `last_name`, `dob`). | Any patient field |
+| `search` | string | The search term/value to match. | Any string |
+| `wildcard` | string | Add wildcards before/after/both sides of the term. Optional. | `"before"`, `"after"`, `"both"` |
+
+### Example JSON Request
+
+```json
+{
+  "first_name": {
+    "search": "Jo",
+    "wildcard": "after"
+  },
+  "last_name": {
+    "search": "Doe"
+  }
+}
+```
+
+### Example JSON Response
+
+```json
+[
+  {
+    "uuid": "65b0535b61d54",
+    "first_name": "John",
+    "middle_name": "",
+    "last_name": "Doe",
+    "dob": "1972-08-10",
+    "gender": "M",
+    "allergies": "none",
+    "medication_list": "None",
+    "email": "john.doe@fakemail.com",
+    "b_addr_1": "123 Main St",
+    "b_addr_2": "",
+    "b_addr_city": "Miami",
+    "b_addr_state": "FL",
+    "b_addr_zip": "32107",
+    "s_addr_1": "456 Park Place",
+    "s_addr_2": "",
+    "s_addr_city": "Tampa",
+    "s_addr_state": "FL",
+    "s_addr_zip": "34287",
+    "email_opt_in": "",
+    "emr_record_id": "JD123-456",
+    "phone": "4075551200",
+    "drivers_license_state": "",
+    "drivers_license_number": "",
+    "has_pending_prescription": true,
+    "has_processing_prescription": false
+  }
+]
+```
+
+---
+
+## Create Patient
+
+### Endpoint Overview
+
+| Field | Details |
+| --- | --- |
+| **Endpoint** | `/api/v2/createPatient` |
+| **Method** | `POST` |
+| **Content-Type** | `application/json` |
+| **Request Body** | JSON object containing patient details (personal, contact, address info). |
+
+### Parameters
+
+| Parameter | Type | Required | Min | Max | Values |
+| --- | --- | --- | ---:| ---:| --- |
+| `first_name` | string | Yes | 2 | 128 | - |
+| `middle_name` | string | No | 2 | 128 | - |
+| `last_name` | string | Yes | 2 | 128 | - |
+| `dob` | date | Yes | - | - | - |
+| `gender` | enum | Yes | - | - | `M`, `F` |
+| `allergies` | string | Yes | 2 | - | - |
+| `email` | string | Yes | 10 | 128 | - |
+| `phone` | string | No | 10 | 32 | - |
+| `b_addr_1` | string | No | 5 | 128 | - |
+| `b_addr_2` | string | No | 0 | 128 | - |
+| `b_addr_city` | string | No | 2 | 64 | - |
+| `b_addr_state` | string | No | 2 | 3 | - |
+| `b_addr_zip` | string | No | 5 | 10 | - |
+| `s_addr_1` | string | Yes | 5 | 128 | - |
+| `s_addr_2` | string | No | 0 | 128 | - |
+| `s_addr_city` | string | Yes | 2 | 64 | - |
+| `s_addr_state` | string | Yes | 2 | 3 | - |
+| `s_addr_zip` | string | Yes | 5 | 10 | - |
+| `drivers_license_state` | string | No | 2 | 3 | - |
+| `drivers_license_number` | string | No | 5 | 255 | - |
+| `email_opt_in` | string | No | 1 | 1 | - |
+| `emr_record_id` | string | No | - | 255 | - |
+| `medication_list` | string | Yes | - | 512 | - |
+
+### Example JSON Request
+
+```json
+{
+  "first_name": "John",
+  "middle_name": "",
+  "last_name": "Doe",
+  "dob": "1972-08-10",
+  "gender": "M",
+  "allergies": "none",
+  "medication_list": "None",
+  "email": "john.doe@fakemail.com",
+  "b_addr_1": "123 Main St",
+  "b_addr_2": "",
+  "b_addr_city": "Miami",
+  "b_addr_state": "FL",
+  "b_addr_zip": "32107",
+  "s_addr_1": "456 Park Place",
+  "s_addr_2": "",
+  "s_addr_city": "Tampa",
+  "s_addr_state": "FL",
+  "s_addr_zip": "34287",
+  "email_opt_in": "",
+  "emr_record_id": "JD123-456",
+  "phone": "4075551200",
+  "drivers_license_state": "",
+  "drivers_license_number": ""
+}
+```
+
+### Example JSON Response
+
+```json
+{
+  "uuid": "669b1a48e1216"
+}
+```
+
+> If the patient already exists, the API returns the existing patient's `uuid`.
+
+---
+
+## Update Patient
+
+### Endpoint Overview
+
+| Field | Details |
+| --- | --- |
+| **Endpoint** | `/api/v2/updatePatient` |
+| **Method** | `POST` |
+| **Content-Type** | `application/json` |
+| **Request Body** | JSON object with fields to update. **Only** `uuid` is required; include any fields you wish to change. |
+
+### Parameters
+
+> Only `uuid` is required. All other fields are optional when updating.
+
+| Parameter | Type | Required | Min | Max | Values |
+| --- | --- | --- | ---:| ---:| --- |
+| `uuid` | string | Yes | - | - | - |
+| `first_name` | string | No | 2 | 128 | - |
+| `middle_name` | string | No | 2 | 128 | - |
+| `last_name` | string | No | 2 | 128 | - |
+| `dob` | date | No | - | - | - |
+| `gender` | enum | No | - | - | `M`, `F` |
+| `allergies` | string | No | 2 | - | - |
+| `email` | string | No | 10 | 128 | - |
+| `phone` | string | No | 10 | 32 | - |
+| `b_addr_1` | string | No | 5 | 128 | - |
+| `b_addr_2` | string | No | 0 | 128 | - |
+| `b_addr_city` | string | No | 2 | 64 | - |
+| `b_addr_state` | string | No | 2 | 3 | - |
+| `b_addr_zip` | string | No | 5 | 10 | - |
+| `s_addr_1` | string | No | 5 | 128 | - |
+| `s_addr_2` | string | No | 0 | 128 | - |
+| `s_addr_city` | string | No | 2 | 64 | - |
+| `s_addr_state` | string | No | 2 | 3 | - |
+| `s_addr_zip` | string | No | 5 | 10 | - |
+| `drivers_license_state` | string | No | 2 | 3 | - |
+| `drivers_license_number` | string | No | 5 | 255 | - |
+| `email_opt_in` | string | No | 1 | 1 | - |
+| `emr_record_id` | string | No | - | 255 | - |
+| `medication_list` | string | No | - | 512 | - |
+
+### Example JSON Request
+
+```json
+{
+  "uuid": "65b053805df38",
+  "gender": "M",
+  "dob": "1979-04-10",
+  "emr_record_id": "!234",
+  "medication_list": "none",
+  "allergies": "none"
+}
+```
+
+### Example JSON Response
+
+```json
+{
+  "uuid": "65b053805df38"
+}
+```

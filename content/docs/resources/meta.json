@@ -1,10 +1,8 @@
 {
-  "title": "Guides",
+  "title": "Resources",
   "defaultOpen": false,
   "pages": [
     "index",
-    "auth",
-    "api",
     "..."
   ]
 }
