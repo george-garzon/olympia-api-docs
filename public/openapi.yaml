@@ -1,0 +1,292 @@
+openapi: 3.1.0
+info:
+  title: Galaxy API
+  version: 1.0.0
+  description: |
+    Demo spec for Fumadocs OpenAPI Playground.
+    Includes authentication, CRUD for planets, and file upload.
+
+servers:
+  - url: https://api.example.com/v1
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Planets
+
+paths:
+  /me:
+    get:
+      tags: [Auth]
+      summary: Get authenticated user
+      description: Returns the current authenticated user's profile.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Authenticated user object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                ok:
+                  value:
+                    id: 1
+                    name: Marc
+                    email: marc@example.com
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /token:
+    post:
+      tags: [Auth]
+      summary: Get a bearer token
+      description: Exchange username/password for a token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                  example: demo
+                password:
+                  type: string
+                  example: secret
+      responses:
+        '200':
+          description: Token issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOi...
+                  token_type:
+                    type: string
+                    example: bearer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users:
+    post:
+      tags: [Users]
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email]
+              properties:
+                name:
+                  type: string
+                  example: Leia Organa
+                email:
+                  type: string
+                  format: email
+                  example: leia@example.com
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /planets:
+    get:
+      tags: [Planets]
+      summary: Get all planets
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+      responses:
+        '200':
+          description: Paginated list of planets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Planet'
+                  page:
+                    type: integer
+                  limit:
+                    type: integer
+              examples:
+                ok:
+                  value:
+                    items:
+                      - { id: 1, name: "Tatooine", climate: "arid" }
+                      - { id: 2, name: "Hoth", climate: "frozen" }
+                    page: 1
+                    limit: 10
+    post:
+      tags: [Planets]
+      summary: Create a planet
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanetCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Planet'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /planets/{id}:
+    get:
+      tags: [Planets]
+      summary: Get a planet by ID
+      parameters:
+        - $ref: '#/components/parameters/PlanetId'
+      responses:
+        '200':
+          description: Planet details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Planet'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Planets]
+      summary: Update a planet
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PlanetId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanetUpdate'
+      responses:
+        '200':
+          description: Updated planet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Planet'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Planets]
+      summary: Delete a planet
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PlanetId'
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /planets/{id}/image:
+    post:
+      tags: [Planets]
+      summary: Upload an image for a planet
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PlanetId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Image uploaded
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    PlanetId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: The ID of the planet
+  responses:
+    Unauthorized:
+      description: Authentication required
+    Forbidden:
+      description: Access forbidden
+    NotFound:
+      description: Resource not found
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        email: { type: string }
+    Planet:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        climate: { type: string }
+    PlanetCreate:
+      type: object
+      required: [name, climate]
+      properties:
+        name: { type: string }
+        climate: { type: string }
+    PlanetUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        climate: { type: string }

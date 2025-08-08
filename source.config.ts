@@ -5,6 +5,10 @@ import {
   metaSchema,
 } from 'fumadocs-mdx/config';
 
+import { createOpenAPI, attachFile } from 'fumadocs-openapi/server';
+import { loader } from 'fumadocs-core/source';
+
+
 // You can customise Zod schemas for frontmatter and `meta.json` here
 // see https://fumadocs.vercel.app/docs/mdx/collections#define-docs
 export const docs = defineDocs({
@@ -21,3 +25,6 @@ export default defineConfig({
     // MDX options
   },
 });
+
+
+

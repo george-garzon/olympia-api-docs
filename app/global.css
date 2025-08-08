@@ -1,3 +1,6 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+/* app/global.css (or your global) */
+@import 'fumadocs-openapi/css/preset.css';
+

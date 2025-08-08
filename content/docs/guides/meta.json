@@ -1,0 +1,10 @@
+{
+  "title": "Guides",
+  "defaultOpen": false,
+  "pages": [
+    "index",
+    "auth",
+    "api",
+    "..."
+  ]
+}

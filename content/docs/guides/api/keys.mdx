@@ -1,0 +1,17 @@
+---
+title: API Keys
+description: Create and manage API keys.
+---
+
+# API Keys
+
+## Create a key
+1. Go to **Dashboard → API Keys**
+2. Click **Create Key**
+3. Copy the value somewhere safe
+
+## Use your key
+Send it as a bearer token:
+
+```bash
+curl -H "Authorization: Bearer YOUR_KEY" https://api.example.com/v1/ping
