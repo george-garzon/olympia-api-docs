@@ -1,0 +1,12 @@
+{
+  "title": "Self-hosting",
+  "defaultOpen": true,
+  "pages": [
+    "index",
+    "getting-started",
+    "api",
+    "resources",
+    "..."
+
+  ]
+}
