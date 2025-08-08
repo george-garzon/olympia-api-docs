@@ -1,45 +1,41 @@
-# olympia-api-docs
 
-This is a Next.js application generated with
-[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
+## Key Features
+- **Create Patients**
+- **Search Products**
+- **Create Prescriptions**
+- **Receive Tracking**
 
-Run development server:
+## Overview
 
-```bash
-npm run dev
-# or
-pnpm dev
-# or
-yarn dev
-```
+### Authenticate Requests
+To interact with the API, users must first obtain an access token by providing their username, password, and API secret.
+This token is valid for **24 hours** and must be included as a **Bearer Token** in all API requests to ensure secure access.
 
-Open http://localhost:3000 with your browser to see the result.
+---
 
-## Explore
+## Manage Products and Pricing
+Retrieve information about products and their pricing.
+This feature helps physicians stay informed about available options and associated costs.
 
-In the project, you can see:
+---
 
-- `lib/source.ts`: Code for content source adapter, [`loader()`](https://fumadocs.dev/docs/headless/source-api) provides the interface to access your content.
-- `app/layout.config.tsx`: Shared options for layouts, optional but preferred to keep.
+## Handle Patient Records
+The API includes methods to search for, create, and update patient records.
+You can store and later search using a 3rd party EMR record ID.
+> **Note:** A valid patient ID is required when submitting new prescription requests.
 
-| Route                     | Description                                            |
-| ------------------------- | ------------------------------------------------------ |
-| `app/(home)`              | The route group for your landing page and other pages. |
-| `app/docs`                | The documentation layout and pages.                    |
-| `app/api/search/route.ts` | The Route Handler for search.                          |
+---
 
-### Fumadocs MDX
+## Create New Prescriptions
+Generate new prescriptions by utilizing the available products and patient data.
+The API will return the **ID of the created prescription**, allowing for easy tracking and management.
 
-A `source.config.ts` config file has been included, you can customise different options like frontmatter schema.
 
-Read the [Introduction](https://fumadocs.dev/docs/mdx) for further details.
+## Our Commitment to Quality
 
-## Learn More
+Regulatory excellence is built into every step of the process at Olympia. Alongside our in-house Quality and Compliance departments, our medications undergo rigorous third-party testing to ensure that we’re comfortable compounding and dispensing them to practitioners across the country.
 
-To learn more about Next.js and Fumadocs, take a look at the following
-resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-  features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [Fumadocs](https://fumadocs.vercel.app) - learn about Fumadocs
+Licensed across 48 states in the U.S., we are committed to delivering on high-quality pharmaceutical solutions without taking shortcuts. We adhere to cGMP (Current Good Manufacturing Practices), the same guidelines as pharmaceutical manufacturers.
+<Cards>
+  <Card title="Learn more about Olympia" href="https://www.olympiapharmacy.com/about/" />
+</Cards>
